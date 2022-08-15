@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-
+import "./pages.css"
 
 export default function ReactP() {
   const [show, setShow] = useState(false);
@@ -46,7 +46,7 @@ export default function ReactP() {
   return (
     <PayPalScriptProvider
       options={{
-        "client-id": "",
+        "client-id": "AULrtHnHV6XBK-Fm3sCmDKJQTntNfWHClVDcaL6_PkRImRl6Nx-lVHoUW0ZyxWA7kREcl-SSZ25sfOaR",
       }}
     >
       <div>
@@ -78,20 +78,21 @@ export default function ReactP() {
               <p>
                 <span>$20</span>
               </p>
-              <button type="submit" onClick={() => setShow(true)}>
-                Buy nows
+              <button type="submit" onClick={() => setShow(!show)}>
+                Buy now
               </button>
             </div>
           </div>
+          {show ? (
+            <PayPalButtons
+              style={{ layout: "vertical" }}
+              createOrder={createOrder}
+              onApprove={onApprove}
+            />
+          ) : null}
         </div>
 
-        {show ? (
-          <PayPalButtons
-            style={{ layout: "vertical" }}
-            createOrder={createOrder}
-            onApprove={onApprove}
-          />
-        ) : null}
+
       </div>
     </PayPalScriptProvider>
   );
