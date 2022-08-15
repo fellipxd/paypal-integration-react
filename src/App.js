@@ -13,6 +13,7 @@ function App() {
 
           <Route exact path='/' element={<Pay />} />
           <Route exact path='/react' element={<ReactP />} />
+          <Route exact path='/react' element={<ReactP />} />
         </Routes>
       </BrowserRouter>
     </div>

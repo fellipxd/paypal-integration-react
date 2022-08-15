@@ -79,7 +79,7 @@ export default function ReactP() {
                 <span>$20</span>
               </p>
               <button type="submit" onClick={() => setShow(true)}>
-                Buy now
+                Buy nows
               </button>
             </div>
           </div>
