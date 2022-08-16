@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import "./pages.css"
+import "./pages.css";
 
 export default function ReactP() {
   const [show, setShow] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [ErrorMessage, setErrorMessage] = useState("");
-  const [orderID, setOrderID] = useState(false);
+  // const [success, setSuccess] = useState(false);
+  // const [ErrorMessage, setErrorMessage] = useState("");
+  // const [orderID, setOrderID] = useState(false);
 
   // creates a paypal order
   const createOrder = (data, actions) => {
     return actions.order
       .create({
+        intent: "CAPTURE",
         purchase_units: [
-          {
+            {
             description: "Sunflower",
             amount: {
               currency_code: "USD",
@@ -21,28 +22,20 @@ export default function ReactP() {
             },
           },
         ],
-        // not needed if a shipping address is actually needed
-        application_context: {
-          shipping_preference: "NO_SHIPPING",
-        },
       })
-      .then((orderID) => {
-        setOrderID(orderID);
-        return orderID;
-      });
+
   };
 
-  // check Approval
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      const { payer } = details;
-      setSuccess(true);
-    });
+  const onApprove = async (data, actions) => {
+    const order = await actions.order.capture();
+    console.log(order);
   };
-  //capture likely error
-  const onError = (data, actions) => {
-    setErrorMessage("An Error occured with your payment ");
-  };
+
+  const onError = (err) => {
+    console.log(err);
+  }
+
+
   return (
     <PayPalScriptProvider
       options={{
@@ -78,18 +71,18 @@ export default function ReactP() {
               <p>
                 <span>$20</span>
               </p>
-              <button type="submit" onClick={() => setShow(!show)}>
+              <button type="submit" onClick={() => setShow(true)}>
                 Buy now
               </button>
             </div>
+            {show ? (
+              <PayPalButtons
+                style={{ layout: "vertical" }}
+                createOrder={createOrder}
+                onApprove={onApprove}
+              />
+            ) : null}
           </div>
-          {show ? (
-            <PayPalButtons
-              style={{ layout: "vertical" }}
-              createOrder={createOrder}
-              onApprove={onApprove}
-            />
-          ) : null}
         </div>
 
 
